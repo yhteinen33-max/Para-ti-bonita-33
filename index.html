@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para Misi 💗</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    color: white;
+    font-size: 2.5rem;
+}
+
+button {
+    padding: 12px 25px;
+    margin: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#si {
+    background-color: #ff4d6d;
+    color: white;
+}
+
+#no {
+    background-color: #6c757d;
+    color: white;
+    position: absolute;
+}
+
+#mensaje {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    color: white;
+    font-size: 24px;
+    width: 80%;
+    text-align: center;
+    transition: 0.5s;
+
+    background: rgba(0,0,0,0.4);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+/* Overlay oscuro */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    opacity: 0;
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+/* Corazones */
+.corazon {
+    position: absolute;
+    color: #ff4d6d;
+    font-size: 20px;
+    animation: flotar 5s linear infinite;
+}
+
+@keyframes flotar {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-800px) scale(1.5);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>💗 Misi, ¿quieres ser mi novia? 💗</h1>
+    <button id="si">Sí 💘</button>
+    <button id="no">No 😢</button>
+</div>
+
+<div id="overlay"></div>
+
+<div id="mensaje">
+    <span id="texto"></span>
+</div>
+
+<audio id="musica" src="musica.mp3" loop></audio>
+
+<script>
+// BOTÓN QUE SE ESCAPA
+const noBtn = document.getElementById("no");
+
+noBtn.addEventListener("mouseover", () => {
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+
+// TEXTO ANIMADO
+const textoCompleto = `Misi... 💫
+
+Desde que empezamos a hablar, algo en ti me atrapó.
+
+Me haces reír, me haces sentir tranquilo y feliz.
+No sé cómo explicarlo, pero contigo todo se siente diferente.
+
+Me gustas muchísimo, y me encantaría intentar algo bonito contigo. 💗
+
+¿Te gustaría ser mi novia? 🥺`;
+
+function escribirTexto() {
+    let i = 0;
+    const velocidad = 40;
+    const contenedor = document.getElementById("texto");
+    contenedor.innerHTML = "";
+
+    function escribir() {
+        if (i < textoCompleto.length) {
+            contenedor.innerHTML += textoCompleto.charAt(i);
+            i++;
+            setTimeout(escribir, velocidad);
+        }
+    }
+
+    escribir();
+}
+
+// BOTÓN SÍ (ARREGLADO)
+let yaSePresiono = false;
+
+document.getElementById("si").addEventListener("click", () => {
+    if (yaSePresiono) return;
+    yaSePresiono = true;
+
+    const mensaje = document.getElementById("mensaje");
+    const overlay = document.getElementById("overlay");
+
+    mensaje.style.transform = "translate(-50%, -50%) scale(1)";
+    overlay.style.opacity = "1";
+
+    escribirTexto();
+
+    const musica = document.getElementById("musica");
+    musica.volume = 0.3;
+    musica.play();
+
+    document.getElementById("si").disabled = true;
+});
+
+// CORAZONES
+function crearCorazon() {
+    const corazon = document.createElement("div");
+    corazon.classList.add("corazon");
+    corazon.innerHTML = "💗";
+
+    corazon.style.left = Math.random() * window.innerWidth + "px";
+    corazon.style.bottom = "0px";
+
+    document.body.appendChild(corazon);
+
+    setTimeout(() => {
+        corazon.remove();
+    }, 5000);
+}
+
+setInterval(crearCorazon, 300);
+</script>
+
+</body>
+</html>
